@@ -16,7 +16,9 @@ tone_analyzer = ToneAnalyzerV3(
 def get_json(professor_name, json):
 	text = str(json[professor_name])
 	result_dict = {}
-	result_dict['id'] = professor_name
+	name_split = professor_name.split(',')
+
+	result_dict['id'] = name_split[1] + " " + name_split[0] 
 	result_dict['summary'] = summarize(text, word_count=WORD_COUNT)
 
 	tone_analysis = tone_analyzer.tone(
@@ -61,7 +63,7 @@ with open(json_filename) as f:
 booker = get_json('Booker,Vaughn', d)
 phillips = get_json('Phillips,Anne', d)
 
-total = [booker, phillips]
+total = {'Vaughn Booker': booker, 'Anne Phillips': phillips}
 print(json.dumps(total, indent=4))
 
 with open('output.json', 'w') as outfile:
