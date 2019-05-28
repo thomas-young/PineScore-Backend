@@ -108,6 +108,7 @@ def scrape_html_files(chromedriver: str) -> dict:
                     "tr:nth-child(1) > td.masterMenu.shadowMenuCell > " +
                     "a:nth-child(2)")))
             print_html_button.click()
+            sleep(2)
 
             # extract the HTML source and parse the source files
             html_source = browser.page_source
@@ -171,7 +172,7 @@ def parse_html(html_contents: str) -> List[str]:
         if rev.has_attr("class"):
             classes: set = set(rev.get("class", []))
 
-            if len(classes.union(REVIEW_CLASSES)) > 0:
+            if classes == REVIEW_CLASSES > 0:
                 reviews.append(rev.text)
     return reviews
 
