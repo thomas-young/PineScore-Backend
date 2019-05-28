@@ -14,7 +14,7 @@ tone_analyzer = ToneAnalyzerV3(
 )
 
 def get_json(professor_name, json):
-	text = str(json[professor_name])
+	text = str(' '.join(json))
 	result_dict = {}
 	name_split = professor_name.split(',')
 
@@ -46,8 +46,8 @@ def get_json(professor_name, json):
 
 	for tone in ['sadness', 'anger', 'fear']:
 		if tone in tone_dict:
-			controversy_score += tone_dict['sadness'][0]
-			controversy_n += tone_dict['sadness'][1]
+			controversy_score += tone_dict[tone][0]
+			controversy_n += tone_dict[tone][1]
 			tone_count += 1
 	if tone_count > 0:		
 		result_dict['controversy_score'] = int(controversy_score / tone_count)
@@ -59,12 +59,26 @@ def get_json(professor_name, json):
 
 with open(json_filename) as f:
 	d = json.load(f)
+print(d)
+total = {}
 
-booker = get_json('Booker,Vaughn', d)
-phillips = get_json('Phillips,Anne', d)
+for prof in d.keys():
+	print(prof)
+	if d[prof]:	
+		try:
+			myjson = get_json(prof, d[prof])
+			name_split = prof.split(',')
 
-total = {'Vaughn Booker': booker, 'Anne Phillips': phillips}
-print(json.dumps(total, indent=4))
+			realname = name_split[1] + " " + name_split[0] 			
+			total[realname] = myjson
+		except:
+			print(f"error with: {prof}")
+
+# booker = get_json('Booker,Vaughn', d)
+# phillips = get_json('Phillips,Anne', d)
+
+# total = {'Vaughn Booker': booker, 'Anne Phillips': phillips}
+# print(json.dumps(total, indent=4))
 
 with open('output.json', 'w') as outfile:
     json.dump(total, outfile)
