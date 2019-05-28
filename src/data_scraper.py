@@ -172,7 +172,7 @@ def parse_html(html_contents: str) -> List[str]:
         if rev.has_attr("class"):
             classes: set = set(rev.get("class", []))
 
-            if classes == REVIEW_CLASSES > 0:
+            if classes == REVIEW_CLASSES:
                 reviews.append(rev.text)
     return reviews
 
